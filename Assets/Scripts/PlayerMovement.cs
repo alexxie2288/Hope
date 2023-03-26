@@ -5,11 +5,13 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {   
     private Rigidbody2D players;
+    private BoxCollider2D coll;
     private SpriteRenderer sprite;
     private Animator movement;
 
    [SerializeField] private float HorizontalVelocity = 7f;
-   [SerializeField] private float VerticleVelocity = 7f;
+   [SerializeField] private float VerticleVelocity = 11f;
+   [SerializeField] private LayerMask jumpableGround;
 
 
     private enum MovementStatus{idle, running, jumping, falling}
@@ -17,6 +19,7 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         players = GetComponent<Rigidbody2D>(); 
+        coll = GetComponent<BoxCollider2D>();
         movement = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
     }
@@ -31,7 +34,7 @@ public class PlayerMovement : MonoBehaviour
         players.velocity = new Vector2(dirX * HorizontalVelocity, players.velocity.y);
 
 
-        if(Input.GetButtonDown("Jump")){
+        if(Input.GetButtonDown("Jump") && isGrounded()){
             players.velocity = new Vector2(players.velocity.x, VerticleVelocity);
         }
 
@@ -62,5 +65,9 @@ public class PlayerMovement : MonoBehaviour
         }
 
         movement.SetInteger("status", (int)status);
+    }
+
+    private bool isGrounded(){
+        return Physics2D.BoxCast(coll.bounds.center, coll.bounds.size, 0f, Vector2.down, .1f, jumpableGround);
     }
 }
