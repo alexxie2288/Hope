@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Items
   layers:
   - Default
   - TransparentFX
@@ -11,7 +12,7 @@ TagManager:
   - 
   - Water
   - UI
-  - Ground
+  - Terrain
   - 
   - 
   - 
@@ -43,6 +44,9 @@ TagManager:
     locked: 0
   - name: Background decals
     uniqueID: 4027236079
+    locked: 0
+  - name: NPC
+    uniqueID: 1696380971
     locked: 0
   - name: Default
     uniqueID: 0
