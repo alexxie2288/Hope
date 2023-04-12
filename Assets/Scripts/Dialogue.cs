@@ -2,98 +2,99 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+
 public class Dialogue : MonoBehaviour
 {
-
-
     public GameObject window;
     public GameObject indicator;
-    public List<string> dialogues;
     public TMP_Text dialogueText;
+    public List<string> dialogues;
     public float writingSpeed;
-    // Start is called before the first frame update
-    
-    //dialogue index
     private int index;
-    //character index
     private int charIndex;
-    //start bool
     private bool started;
-
     private bool waitForNext;
 
-
-    private void ToggleWindow(bool show){
-        window.SetActive(show);
+    private void Awake()
+    {
+        ToggleIndicator(false);
+        ToggleWindow(false);
     }
 
-    private void ToggleIndicator(bool show){
+    private void ToggleWindow(bool show)
+    {
+        window.SetActive(show);
+    }
+    public void ToggleIndicator(bool show)
+    {
         indicator.SetActive(show);
     }
 
-    //staring dialogue
-    public void StartDialogue(){
-
-        if(started){
+    public void StartDialogue()
+    {
+        if (started)
             return;
-        }
-        //show window, hide indicator, start index at zero, start writing
+
         started = true;
         ToggleWindow(true);
         ToggleIndicator(false);
         GetDialogue(0);
-        
     }
 
-    private void GetDialogue(int i){
+    private void GetDialogue(int i)
+    {
         index = i;
         charIndex = 0;
         dialogueText.text = string.Empty;
         StartCoroutine(Writing());
     }
 
-
-    //ending dialogue
-    public void EndDialogue(){
-        //hide the window
-        ToggleWindow(false);
-        
+    //End Dialogue
+    public void EndDialogue()
+    {
+        started = false;
+        waitForNext = false;
+        StopAllCoroutines();
+        ToggleWindow(false);        
     }
-    IEnumerator Writing(){
-        //Write the character, increase charIndex, wait, restart
+    IEnumerator Writing()
+    {
+        yield return new WaitForSeconds(writingSpeed);
+
         string currentDialogue = dialogues[index];
         dialogueText.text += currentDialogue[charIndex];
         charIndex++;
-
-        //chack if reach the end of the sentence
-        if(charIndex < currentDialogue.Length){
+        if(charIndex < currentDialogue.Length)
+        {
             yield return new WaitForSeconds(writingSpeed);
             StartCoroutine(Writing());
         }
-        else{
+        else
+        {
             waitForNext = true;
-        }
-
+        }        
     }
 
-    private void Update(){
-
-         if(started){
+    private void Update()
+    {
+        if (!started)
             return;
-        }
 
-        if(waitForNext && Input.GetKeyDown(KeyCode.E)){
+        if(waitForNext && Input.GetKeyDown(KeyCode.E))
+        {
             waitForNext = false;
             index++;
-            if(index < dialogues.Count){
+
+            if(index < dialogues.Count)
+            {
                 GetDialogue(index);
             }
-            else{
+            else
+            {
+                ToggleIndicator(true);
                 EndDialogue();
-            }
-            
+            }            
         }
     }
-
 
 }
