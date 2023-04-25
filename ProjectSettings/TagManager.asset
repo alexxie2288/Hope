@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Items
   - Trap
+  - Teleporter
+  - Killzone
   layers:
   - Default
   - TransparentFX
@@ -54,4 +56,7 @@ TagManager:
     locked: 0
   - name: Terrain
     uniqueID: 1701437251
+    locked: 0
+  - name: Terrain decal
+    uniqueID: 2879143853
     locked: 0
