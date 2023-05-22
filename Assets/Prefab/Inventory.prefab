@@ -1358,6 +1358,7 @@ MonoBehaviour:
   itemDescription: {fileID: 6052362137345021586}
   mouseFollower: {fileID: 9056609620761492951, guid: 160bbf4521ece1645829244d14729566, type: 3}
   image: {fileID: -2055512484, guid: dd97d10a4678df14ca13f579982a62af, type: 3}
+  image2: {fileID: 968219640, guid: dd97d10a4678df14ca13f579982a62af, type: 3}
   quantity: 1
   title: Gas
   description: Fuel for the ship

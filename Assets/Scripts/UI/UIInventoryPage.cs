@@ -19,6 +19,8 @@ public class UIInventoryPage : MonoBehaviour
     public int quantity;
     public string title, description;
 
+    private int currentlyDraggedItemIndex = -1;
+
     private void Awake()
     {
         Hide();
@@ -40,23 +42,38 @@ public class UIInventoryPage : MonoBehaviour
     }
 
 
-    private void HandleItemSelection(UIInventoryItem obj){
+    private void HandleItemSelection(UIInventoryItem inventoryItemUI){
         itemDescription.SetDescription(image, title, description);
         listOfItems[0].Select();
     }
 
-    private void HandleBeginDrag(UIInventoryItem obj){
+    private void HandleBeginDrag(UIInventoryItem inventoryItemUI){
+        int index = listOfItems.IndexOf(inventoryItemUI);
+        if(index == -1){return;}
+        currentlyDraggedItemIndex = index;
         mouseFollower.Toggle(true);
-        mouseFollower.SetData(image, quantity);
+        mouseFollower.SetData(index == 0 ? image : image2, quantity);
     }
 
-    private void HandleSwap(UIInventoryItem obj){
-    }
-
-    private void HandleEndDrag(UIInventoryItem obj){
+    private void HandleSwap(UIInventoryItem inventoryItemUI){
+        int index = listOfItems.IndexOf(inventoryItemUI);
+        if(index == -1){
+            mouseFollower.Toggle(false);
+            currentlyDraggedItemIndex = -1;
+            return;
+        }
+        listOfItems[currentlyDraggedItemIndex].SetData(index == 0 ? image : image2, quantity);
+        listOfItems[index].SetData(currentlyDraggedItemIndex == 0 ? image : image2, quantity);
         mouseFollower.Toggle(false);
     }
-    private void HandleShowItemActions(UIInventoryItem obj){}
+
+    private void HandleEndDrag(UIInventoryItem inventoryItemUI){
+        mouseFollower.Toggle(false);
+    }
+
+    private void HandleShowItemActions(UIInventoryItem inventoryItemUI){
+
+    }
 
 
     public void Show(){
@@ -64,7 +81,7 @@ public class UIInventoryPage : MonoBehaviour
         itemDescription.ResetDescription();
 
         listOfItems[0].SetData(image, quantity);
-        listOfItems[2].SetData(image2, quantity);
+        listOfItems[1].SetData(image2, quantity);
     }
 
     public void Hide(){
