@@ -6,8 +6,9 @@ public class PlayerMovement : MonoBehaviour
 {   
     private Rigidbody2D players;
     private BoxCollider2D coll;
-    private SpriteRenderer sprite;
     private Animator movement;
+    private SpriteRenderer sprite;
+
 
    [SerializeField] private float HorizontalVelocity = 7f;
    [SerializeField] private float VerticleVelocity = 11f;

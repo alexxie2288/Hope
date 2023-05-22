@@ -20,12 +20,12 @@ public class PlayerTeleport : MonoBehaviour
         
         if(collision.gameObject.CompareTag("Player"))
         {
-            if(Vector2.Distance(player.transform.position, transform.position) > 0.3f){
+            if(Vector2.Distance(player.transform.position, transform.position) > 1f){
 
                 anim.SetTrigger("Teleport");
-            yield return new WaitForSeconds(1);
+                yield return new WaitForSeconds(1);
             
-            player.transform.position = new Vector2(portal.transform.position.x, portal.transform.position.y);
+                player.transform.position = new Vector2(portal.transform.position.x, portal.transform.position.y);
             }
         }
     }
@@ -36,5 +36,3 @@ public class PlayerTeleport : MonoBehaviour
     }
 
 }
-
-//player.transform.position = new Vector2(portal.transform.position.x, portal.transform.position.y);

@@ -8,6 +8,7 @@ TagManager:
   - Trap
   - Teleporter
   - Killzone
+  - Checkpoint
   layers:
   - Default
   - TransparentFX
@@ -42,6 +43,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Further Background
+    uniqueID: 272129955
+    locked: 0
   - name: Background
     uniqueID: 2617737661
     locked: 0

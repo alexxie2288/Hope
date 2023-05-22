@@ -5,13 +5,18 @@ using UnityEngine.SceneManagement;
 
 public class PlayerLife : MonoBehaviour
 {
+    Vector2 checkpointPos;
     private Rigidbody2D rb;
     private Animator anim;
+    
+
+    private Vector3 respawnPoint;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        respawnPoint = transform.position;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -26,16 +31,37 @@ public class PlayerLife : MonoBehaviour
         if(collision.gameObject.CompareTag("Killzone")){
             Die();
         }
+        else if(collision.gameObject.CompareTag("Checkpoint")){
+            respawnPoint = transform.position;
+        }
     }
 
     private void Die()
     {
         rb.bodyType = RigidbodyType2D.Static;
         anim.SetTrigger("death");
+        Respawn();
+        
     }
 
-    private void RestartLevel()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+    private void Respawn(){
+        rb.transform.position = new Vector2(respawnPoint.x, respawnPoint.y);
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
+    // private void RestartLevel()
+    // {
+    //     SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    // }
+
+    // IEnumerator Respawn(float duration){
+    //     rb.velocity = new Vector2(0,0);
+    //     rb.simulated = false;
+    //     transform.localscale = new Vector3(0,0,0);
+    //     yield return new WaitForSeconds(duration);
+    //     transform.position = checkpointPos;
+    //     transform.localscale = new Vector3(1,1,1);
+    //     rb.simulated = true;
+    // }
 }
