@@ -13,11 +13,11 @@ public class UIInventoryPage : MonoBehaviour
     
     [SerializeField] private MouseFollower mouseFollower;
 
-    List<UIInventoryItem> listOfItems = new List<UIInventoryItem>();
+    List<UIInventoryItem> listOfUIItems = new List<UIInventoryItem>();
 
-    public Sprite image, image2;
-    public int quantity;
-    public string title, description;
+    public event Action<int> OnDescriptionRequested, OnItemActionRequested, OnStartDragging;
+
+    public event Action<int, int> OnSwapItems;
 
     private int currentlyDraggedItemIndex = -1;
 
@@ -32,7 +32,7 @@ public class UIInventoryPage : MonoBehaviour
         for(int i = 0; i < inventorysize; i++){
             UIInventoryItem uiItem = Instantiate(itemPrefab, Vector3.zero, Quaternion.identity);
             uiItem.transform.SetParent(contentPanel);
-            listOfItems.Add(uiItem);
+            listOfUIItems.Add(uiItem);
             uiItem.OnItemClicked += HandleItemSelection;
             uiItem.OnItemBeginDrag += HandleBeginDrag;
             uiItem.OnItemDroppedOn += HandleSwap;
@@ -41,51 +41,83 @@ public class UIInventoryPage : MonoBehaviour
         }
     }
 
+    public void UpdateData(int itemIndex, Sprite itemImage, int itemQuantity){
+        if(listOfUIItems.Count > itemQuantity){
+            listOfUIItems[itemIndex].SetData(itemImage, itemQuantity);
+        }
+    }
+
 
     private void HandleItemSelection(UIInventoryItem inventoryItemUI){
-        itemDescription.SetDescription(image, title, description);
-        listOfItems[0].Select();
+        int index = listOfUIItems.IndexOf(inventoryItemUI);
+            if (index == -1)
+                return;
+            OnDescriptionRequested?.Invoke(index);
     }
 
     private void HandleBeginDrag(UIInventoryItem inventoryItemUI){
-        int index = listOfItems.IndexOf(inventoryItemUI);
+        int index = listOfUIItems.IndexOf(inventoryItemUI);
         if(index == -1){return;}
         currentlyDraggedItemIndex = index;
+        HandleItemSelection(inventoryItemUI);
+        OnStartDragging?.Invoke(index);
+
+    }
+
+    public void CreateDraggedItem(Sprite sprite, int quantity)
+    {
         mouseFollower.Toggle(true);
-        mouseFollower.SetData(index == 0 ? image : image2, quantity);
+        mouseFollower.SetData(sprite, quantity);
     }
 
     private void HandleSwap(UIInventoryItem inventoryItemUI){
-        int index = listOfItems.IndexOf(inventoryItemUI);
+        int index = listOfUIItems.IndexOf(inventoryItemUI);
         if(index == -1){
-            mouseFollower.Toggle(false);
-            currentlyDraggedItemIndex = -1;
             return;
         }
-        listOfItems[currentlyDraggedItemIndex].SetData(index == 0 ? image : image2, quantity);
-        listOfItems[index].SetData(currentlyDraggedItemIndex == 0 ? image : image2, quantity);
+        OnSwapItems?. Invoke(currentlyDraggedItemIndex, index);
+    }
+
+    private void ResetDraggedItem()
+    {
         mouseFollower.Toggle(false);
+        currentlyDraggedItemIndex = -1;
     }
 
     private void HandleEndDrag(UIInventoryItem inventoryItemUI){
-        mouseFollower.Toggle(false);
+        ResetDraggedItem();
     }
 
     private void HandleShowItemActions(UIInventoryItem inventoryItemUI){
-
+        int index = listOfUIItems.IndexOf(inventoryItemUI);
+        if (index == -1)
+        {
+            return;
+        }
+        OnItemActionRequested?.Invoke(index);
     }
 
 
     public void Show(){
         gameObject.SetActive(true);
-        itemDescription.ResetDescription();
-
-        listOfItems[0].SetData(image, quantity);
-        listOfItems[1].SetData(image2, quantity);
+        ResetSelection();
     }
 
     public void Hide(){
         gameObject.SetActive(false);
+        ResetDraggedItem();
+    }
+
+    public void ResetSelection(){
+        itemDescription.ResetDescription();
+        DeselectAllItems();
+    }
+
+     private void DeselectAllItems(){
+        foreach (UIInventoryItem item in listOfUIItems)
+        {
+            item.Deselect();
+        }
     }
 
 
