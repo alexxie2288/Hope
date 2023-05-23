@@ -96,8 +96,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20
-  m_fontSizeBase: 20
+  m_fontSize: 15
+  m_fontSizeBase: 15
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -580,8 +580,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 32
-  m_fontSizeBase: 32
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -675,10 +675,10 @@ RectTransform:
   m_Father: {fileID: 6072308587288459473}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 50, y: -50}
+  m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &238286194609282723
 CanvasRenderer:
@@ -1168,8 +1168,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8900713460847511747}
   m_HandleRect: {fileID: 8900713460847511746}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0
+  m_Value: 0
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1206,10 +1206,10 @@ RectTransform:
   m_Father: {fileID: 8900713461268108530}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 323.98627, y: 269.7505}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &8900713461800813511
 MonoBehaviour:
@@ -1357,11 +1357,6 @@ MonoBehaviour:
   contentPanel: {fileID: 8900713461800813510}
   itemDescription: {fileID: 6052362137345021586}
   mouseFollower: {fileID: 9056609620761492951, guid: 160bbf4521ece1645829244d14729566, type: 3}
-  image: {fileID: -2055512484, guid: dd97d10a4678df14ca13f579982a62af, type: 3}
-  image2: {fileID: 968219640, guid: dd97d10a4678df14ca13f579982a62af, type: 3}
-  quantity: 1
-  title: Gas
-  description: Fuel for the ship
 --- !u!1 &8900713462322688183
 GameObject:
   m_ObjectHideFlags: 0
