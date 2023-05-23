@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using Inventory.UI;
+using Inventory.Model;
 using UnityEngine;
 
 namespace Inventory.Model{
