@@ -55,7 +55,7 @@ namespace Inventory{
 
         private void HandleDragging(int itemIndex)
         {
-            InventoryItem inventoryItem = inventoryData.GetItemAt(inventoryItem);
+            InventoryItem inventoryItem = inventoryData.GetItemAt(itemIndex);
             if(inventoryItem.IsEmpty)
                 return;
             inventoryUI.CreateDraggedItem(inventoryItem.item.ItemImage, inventoryItem.quantity);
@@ -63,7 +63,7 @@ namespace Inventory{
 
         private void HandleSwapItems(int itemIndex_1, int itemIndex_2)
         {
-            inventoryData.SwapItem(itemIndex_1, itemIndex_2);
+            inventoryData.SwapItems(itemIndex_1, itemIndex_2);
         }
 
         private void HandleDescriptionRequest(int itemIndex)

@@ -29,6 +29,7 @@ namespace Inventory.Model{
                     {
                         item = item, quantity = quantity
                     };
+                    return;
                 }
             }
         }
