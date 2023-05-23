@@ -12,7 +12,7 @@ namespace Inventory.Model{
 
         [field: SerializeField] public int Size { get; private set; } = 10;
 
-
+        public event Action<Dictionary<int, InventoryItem>> OnInventoryUpadated;
 
         public void Initialize(){
             inventoryItems = new List<InventoryItem>();
@@ -32,6 +32,10 @@ namespace Inventory.Model{
             }
         }
 
+        public void AddItem(InventoryItem item){
+            AddItem(item.item, item.quantity);
+        }
+
         public Dictionary<int, InventoryItem> GetCurrentInventoryState()
         {
             Dictionary<int, InventoryItem> returnValue = new Dictionary<int, InventoryItem>();
@@ -47,6 +51,19 @@ namespace Inventory.Model{
 
         public InventoryItem GetItemAt(int itemIndex){
             return inventoryItems[itemIndex];
+        }
+
+
+        public void SwapItems(int itemIndex_1, int itemIndex_2){
+
+            InventoryItem item1 = inventoryItems[itemIndex_1];
+            inventoryItems[itemIndex_1] = inventoryItems[itemIndex_2];
+            inventoryItems[itemIndex_2] = item1;
+            InformAboutChange();
+        }
+
+        private void InformAboutChange(){
+            OnInventoryUpadated?.Invoke(GetCurrentInventoryState());
         }
     }
 
