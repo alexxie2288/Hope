@@ -5,18 +5,23 @@ using UnityEngine.SceneManagement;
 
 public class PlayerLife : MonoBehaviour
 {
-    Vector2 checkpointPos;
     private Rigidbody2D rb;
     private Animator anim;
-    
+    private Vector2 respawnPoint;
+    CameraController cameraController;
+    private Vector3 scale;
 
-    private Vector3 respawnPoint;
+    private void Awake(){
+        cameraController = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
+    }
+
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         respawnPoint = transform.position;
+        
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -31,37 +36,41 @@ public class PlayerLife : MonoBehaviour
         if(collision.gameObject.CompareTag("Killzone")){
             Die();
         }
-        else if(collision.gameObject.CompareTag("Checkpoint")){
-            respawnPoint = transform.position;
-        }
     }
 
     private void Die()
     {
-        rb.bodyType = RigidbodyType2D.Static;
-        anim.SetTrigger("death");
-        Respawn();
+        anim.SetBool("death", true);
+        StartCoroutine(Respawn(0.5f));
         
     }
 
 
-    private void Respawn(){
-        rb.transform.position = new Vector2(respawnPoint.x, respawnPoint.y);
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
+    // private void Respawn(){
+    //     rb.transform.position = new Vector2(respawnPoint.x, respawnPoint.y);
+    //     //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    // }
 
     // private void RestartLevel()
     // {
     //     SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     // }
 
-    // IEnumerator Respawn(float duration){
-    //     rb.velocity = new Vector2(0,0);
-    //     rb.simulated = false;
-    //     transform.localscale = new Vector3(0,0,0);
-    //     yield return new WaitForSeconds(duration);
-    //     transform.position = checkpointPos;
-    //     transform.localscale = new Vector3(1,1,1);
-    //     rb.simulated = true;
-    // }
+    public void updateCheckpoint(Vector2 pos){
+        respawnPoint = pos;
+    }
+
+    IEnumerator Respawn(float duration){
+        scale = transform.localScale;
+        rb.velocity = Vector3.zero;;
+        rb.simulated = false;
+        transform.localScale = new Vector3(0,0,0);
+        yield return new WaitForSeconds(duration);
+        
+        transform.position = respawnPoint;
+        transform.localScale = scale;
+        rb.simulated = true;
+        rb.transform.parent = null;
+        anim.SetBool("death", false);
+    }
 }

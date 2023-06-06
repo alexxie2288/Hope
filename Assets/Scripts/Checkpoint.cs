@@ -2,17 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class checkpoint : MonoBehaviour
+public class Checkpoint : MonoBehaviour
 {
     // Start is called before the first frame update
-    void Start()
-    {
-        
+    PlayerLife gameController;
+
+    private void Awake(){
+        gameController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerLife>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    private void OnTriggerEnter2D(Collider2D collision){
+        if(collision.CompareTag("Player")){
+            gameController.updateCheckpoint(transform.position);
+        }
     }
 }
