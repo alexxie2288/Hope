@@ -49,6 +49,9 @@ TagManager:
   - name: Background
     uniqueID: 2617737661
     locked: 0
+  - name: factoryBackground
+    uniqueID: 4230716921
+    locked: 0
   - name: Background decals
     uniqueID: 4027236079
     locked: 0
