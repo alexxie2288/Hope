@@ -8,6 +8,14 @@ public class QuestInfoSO : ScriptableObject
 {
     [field:SerializeField] public string id{ get; private set;}
 
+    [Header("General")]
+
+    public string displayName;
+
+    [Header("Requirments")]
+
+    public QuestInfoSO[] questPrerequisites;
+
     private void private void OnValidate() {
         #if UNITY_EDITOR
         id = this.name;
