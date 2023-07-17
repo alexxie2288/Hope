@@ -9,8 +9,6 @@ public class QuestManager : MonoBehaviour
 
     private Dictionary<string, Quest> questMap;
 
-    // quest start requirements
-    private int currentPlayerLevel;
 
     private void Awake()
     {
@@ -25,7 +23,6 @@ public class QuestManager : MonoBehaviour
 
         GameEventsManager.instance.questEvents.onQuestStepStateChange += QuestStepStateChange;
 
-        GameEventsManager.instance.playerEvents.onPlayerLevelChange += PlayerLevelChange;
     }
 
     private void OnDisable()
@@ -36,7 +33,6 @@ public class QuestManager : MonoBehaviour
 
         GameEventsManager.instance.questEvents.onQuestStepStateChange -= QuestStepStateChange;
 
-        GameEventsManager.instance.playerEvents.onPlayerLevelChange -= PlayerLevelChange;
     }
 
     private void Start()
@@ -61,21 +57,10 @@ public class QuestManager : MonoBehaviour
         GameEventsManager.instance.questEvents.QuestStateChange(quest);
     }
 
-    private void PlayerLevelChange(int level)
-    {
-        currentPlayerLevel = level;
-    }
-
     private bool CheckRequirementsMet(Quest quest)
     {
         // start true and prove to be false
         bool meetsRequirements = true;
-
-        // check player level requirements
-        if (currentPlayerLevel < quest.info.levelRequirement)
-        {
-            meetsRequirements = false;
-        }
 
         // check quest prerequisites for completion
         foreach (QuestInfoSO prerequisiteQuestInfo in quest.info.questPrerequisites)
@@ -137,8 +122,7 @@ public class QuestManager : MonoBehaviour
 
     private void ClaimRewards(Quest quest)
     {
-        GameEventsManager.instance.goldEvents.GoldGained(quest.info.goldReward);
-        GameEventsManager.instance.playerEvents.ExperienceGained(quest.info.experienceReward);
+        GameEventsManager.instance.rewardEvents.RewardGained(quest.info.Reward);
     }
 
     private void QuestStepStateChange(string id, int stepIndex, QuestStepState questStepState)
